@@ -12,6 +12,7 @@ if (!isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>System Zarządzania</title>
+    <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>
@@ -20,11 +21,11 @@ if (!isset($_SESSION['user_id'])) {
         $page = isset($_GET['page']) ? $_GET['page'] : 'orders';
         switch ($page) {
             case 'ships':
-                include './ships/list.php';
+                include 'ships/list.php';
                 break;
             case 'orders':
             default:
-                include './orders/list.php';
+                include 'orders/list.php';
                 break;
         }
         ?>

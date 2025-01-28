@@ -9,7 +9,7 @@ require '../includes/db.php';
 
 $id = $_GET['id'] ?? null;
 if (!$id) {
-    header('Location: ../index.php');
+    header('Location: ../index.php?page=ships');
     exit;
 }
 
@@ -18,7 +18,7 @@ $stmt->execute([$id]);
 $ship = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$ship) {
-    header('Location: ../index.php');
+    header('Location: ../index.php?page=ships');
     exit;
 }
 
@@ -32,12 +32,16 @@ $orderCount = $orderStmt->fetchColumn();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Szczegóły statku</title>
+    <link rel="stylesheet" href="../assets/styles.css">
 </head>
 <body>
-    <h1>Szczegóły statku</h1>
-    <p><strong>Nazwa:</strong> <?= htmlspecialchars($ship['name']) ?></p>
-    <p><strong>Status:</strong> <?= htmlspecialchars($ship['status']) ?></p>
-    <p><strong>Liczba zleceń:</strong> <?= $orderCount ?></p>
-    <a href="../index.php?page=ships">Powrót</a>
+    <?php include '../includes/header.php'; ?>
+    <main>
+        <h1>Szczegóły statku</h1>
+        <p><strong>Nazwa:</strong> <?= htmlspecialchars($ship['name']) ?></p>
+        <p><strong>Status:</strong> <?= htmlspecialchars($ship['status']) ?></p>
+        <p><strong>Liczba zleceń:</strong> <?= $orderCount ?></p>
+        <a href="../index.php?page=ships">Powrót</a>
+    </main>
 </body>
 </html>

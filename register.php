@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php if (isset($error)): ?>
         <p style="color: red;"><?= $error ?></p>
     <?php endif; ?>
-    <form method="POST">
+    <form method="POST" class="register-form">
         <label for="username">Nazwa użytkownika:</label>
         <input type="text" id="username" name="username" required>
 

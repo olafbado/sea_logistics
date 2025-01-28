@@ -44,6 +44,7 @@ $ships = $db->query("SELECT id, name FROM ships")->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dodaj zlecenie</title>
+    <link rel="stylesheet" href="../assets/styles.css">
     <script>
         function toggleInputMethod() {
             const method = document.querySelector('input[name="input_method"]:checked').value;
@@ -53,41 +54,43 @@ $ships = $db->query("SELECT id, name FROM ships")->fetchAll(PDO::FETCH_ASSOC);
     </script>
 </head>
 <body>
-    <h1>Dodaj zlecenie</h1>
-    <form method="POST" enctype="multipart/form-data">
-        <label for="title">Tytuł:</label>
-        <input type="text" name="title" placeholder="Tytuł zlecenia" required>
-        <br>
-        <label for="description">Opis:</label>
-        <textarea name="description" placeholder="Opis zlecenia" required></textarea>
-        <br>
-        <label for="ship_id">Statek:</label>
-        <select name="ship_id" required>
-            <option value="">Wybierz statek</option>
-            <?php foreach ($ships as $ship): ?>
-                <option value="<?= $ship['id'] ?>"><?= htmlspecialchars($ship['name']) ?></option>
-            <?php endforeach; ?>
-        </select>
-        <br>
-        <label>Wybierz metodę wprowadzenia pliku:</label>
-        <br>
-        <input type="radio" name="input_method" value="textarea" id="textarea_method" onclick="toggleInputMethod()" checked>
-        <label for="textarea_method">Wprowadź zawartość pliku</label>
-        <br>
-        <input type="radio" name="input_method" value="file" id="file_method" onclick="toggleInputMethod()">
-        <label for="file_method">Prześlij plik .txt</label>
-        <br>
-        <div id="textarea_input">
-            <label for="file_content">Zawartość pliku:</label>
-            <textarea name="file_content" rows="10" cols="50" placeholder="Wpisz zawartość pliku tutaj"></textarea>
-        </div>
-        <div id="file_input" style="display: none;">
-            <label for="file">Wybierz plik .txt:</label>
-            <input type="file" name="file" accept=".txt">
-        </div>
-        <br>
-        <button type="submit">Dodaj</button>
-    </form>
-    <a href="../index.php?page=orders">Powrót</a>
+    <?php include '../includes/header.php'; ?>
+    <main>
+        <h1>Dodaj zlecenie</h1>
+        <form method="POST" enctype="multipart/form-data" class="order-form">
+            <label for="title">Tytuł:</label>
+            <input type="text" name="title" placeholder="Tytuł zlecenia" required>
+            <br>
+            <label for="description">Opis:</label>
+            <textarea name="description" placeholder="Opis zlecenia" required></textarea>
+            <br>
+            <label for="ship_id">Statek:</label>
+            <select name="ship_id" required>
+                <option value="">Wybierz statek</option>
+                <?php foreach ($ships as $ship): ?>
+                    <option value="<?= $ship['id'] ?>"><?= htmlspecialchars($ship['name']) ?></option>
+                <?php endforeach; ?>
+            </select>
+            <br>
+            <label>Wybierz metodę wprowadzenia pliku:</label>
+            <div class="input-method">
+                <input type="radio" name="input_method" value="textarea" id="textarea_method" onclick="toggleInputMethod()" checked>
+                <label for="textarea_method">Wprowadź zawartość pliku</label>
+                <input type="radio" name="input_method" value="file" id="file_method" onclick="toggleInputMethod()">
+                <label for="file_method">Prześlij plik .txt</label>
+            </div>
+            <div id="textarea_input">
+                <label for="file_content">Zawartość pliku:</label>
+                <textarea name="file_content" rows="10" cols="50" placeholder="Wpisz zawartość pliku tutaj"></textarea>
+            </div>
+            <div id="file_input" style="display: none;">
+                <label for="file">Wybierz plik .txt:</label>
+                <input type="file" name="file" accept=".txt">
+            </div>
+            <br>
+            <button type="submit">Dodaj</button>
+        </form>
+        <a href="../index.php?page=orders">Powrót</a>
+    </main>
 </body>
 </html>

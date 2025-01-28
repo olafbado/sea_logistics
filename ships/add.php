@@ -13,7 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $stmt = $db->prepare("INSERT INTO ships (name, status) VALUES (?, ?)");
     $stmt->execute([$name, $status]);
-
     header('Location: ../index.php?page=ships');
     exit;
 }
@@ -23,19 +22,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dodaj Statek</title>
+    <title>Dodaj statek</title>
+    <link rel="stylesheet" href="../assets/styles.css">
 </head>
 <body>
-    <h2>Dodaj Statek</h2>
-    <form method="post">
-        <label for="name">Nazwa:</label>
-        <input type="text" name="name" id="name" required>
-        <br>
-        <label for="status">Status:</label>
-        <input type="text" name="status" id="status" required>
-        <br>
-        <button type="submit">Dodaj</button>
-    </form>
-    <a href="../index.php?page=ships">Powrót</a>
+    <?php include '../includes/header.php'; ?>
+    <main>
+        <h1>Dodaj statek</h1>
+        <form method="POST" class="ship-form">
+            <label for="name">Nazwa:</label>
+            <input type="text" name="name" placeholder="Nazwa statku" required>
+            <br>
+            <label for="status">Status:</label>
+            <input type="text" name="status" placeholder="Status statku" required>
+            <br>
+            <button type="submit">Dodaj</button>
+        </form>
+        <a href="../index.php?page=ships">Powrót</a>
+    </main>
 </body>
 </html>

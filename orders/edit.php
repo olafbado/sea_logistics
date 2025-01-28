@@ -46,6 +46,7 @@ if (!empty($order['file_path']) && file_exists($order['file_path'])) {
     $fileContent = file_get_contents($order['file_path']);
 }
 
+// Fetch the list of ships
 $ships = $db->query("SELECT id, name FROM ships")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
@@ -54,29 +55,33 @@ $ships = $db->query("SELECT id, name FROM ships")->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edytuj zlecenie</title>
+    <link rel="stylesheet" href="../assets/styles.css">
 </head>
 <body>
-    <h1>Edytuj zlecenie</h1>
-    <form method="POST">
-        <label for="title">Tytuł:</label>
-        <input type="text" name="title" value="<?= htmlspecialchars($order['title']) ?>" required>
-        <br>
-        <label for="description">Opis:</label>
-        <textarea name="description" required><?= htmlspecialchars($order['description']) ?></textarea>
-        <br>
-        <label for="ship_id">Statek:</label>
-        <select name="ship_id" required>
-            <option value="">Wybierz statek</option>
-            <?php foreach ($ships as $ship): ?>
-                <option value="<?= $ship['id'] ?>" <?= $ship['id'] == $order['ship_id'] ? 'selected' : '' ?>><?= htmlspecialchars($ship['name']) ?></option>
-            <?php endforeach; ?>
-        </select>
-        <br>
-        <label for="file_content">Zawartość pliku:</label>
-        <textarea name="file_content" rows="10" cols="50"><?= htmlspecialchars($fileContent) ?></textarea>
-        <br>
-        <button type="submit">Zapisz zmiany</button>
-    </form>
-    <a href="../index.php?page=orders">Powrót</a>
+    <?php include '../includes/header.php'; ?>
+    <main>
+        <h1>Edytuj zlecenie</h1>
+        <form method="POST" class="order-form">
+            <label for="title">Tytuł:</label>
+            <input type="text" name="title" value="<?= htmlspecialchars($order['title']) ?>" required>
+            <br>
+            <label for="description">Opis:</label>
+            <textarea name="description" required><?= htmlspecialchars($order['description']) ?></textarea>
+            <br>
+            <label for="ship_id">Statek:</label>
+            <select name="ship_id" required>
+                <option value="">Wybierz statek</option>
+                <?php foreach ($ships as $ship): ?>
+                    <option value="<?= $ship['id'] ?>" <?= $ship['id'] == $order['ship_id'] ? 'selected' : '' ?>><?= htmlspecialchars($ship['name']) ?></option>
+                <?php endforeach; ?>
+            </select>
+            <br>
+            <label for="file_content">Zawartość pliku:</label>
+            <textarea name="file_content" rows="10" cols="50"><?= htmlspecialchars($fileContent) ?></textarea>
+            <br>
+            <button type="submit">Zapisz zmiany</button>
+        </form>
+        <a href="../index.php?page=orders">Powrót</a>
+    </main>
 </body>
 </html>
