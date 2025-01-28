@@ -1,11 +1,9 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ../login.php');
-    exit;
-}
-
+require '../includes/functions.php';
 require '../includes/db.php';
+
+redirectIfNotLoggedIn();
 
 $id = $_GET['id'] ?? null;
 if (!$id) {

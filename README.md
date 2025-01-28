@@ -60,6 +60,32 @@ Moduł `ships` zawiera pliki do zarządzania statkami:
 - `details.php` - wyświetlanie szczegółów statku.
 - `list.php` - wyświetlanie listy statków.
 
+## Format Przechowywania Danych
+Dane są przechowywane w bazie danych MySQL. Struktura tabel jest zdefiniowana w skrypcie `setup.php`.
+
+### Tabela `users`
+| Kolumna  | Typ           | Opis               |
+|----------|---------------|--------------------|
+| `id`     | INT           | Klucz główny       |
+| `username` | VARCHAR(255) | Nazwa użytkownika  |
+| `password` | VARCHAR(255) | Hasło użytkownika  |
+
+### Tabela `orders`
+| Kolumna    | Typ           | Opis               |
+|------------|---------------|--------------------|
+| `id`       | INT           | Klucz główny       |
+| `title`    | VARCHAR(255)  | Tytuł zlecenia     |
+| `description` | TEXT       | Opis zlecenia      |
+| `file_path`  | VARCHAR(255) | Ścieżka do pliku   |
+| `ship_id`  | INT           | ID powiązanego statku |
+
+### Tabela `ships`
+| Kolumna  | Typ           | Opis               |
+|----------|---------------|--------------------|
+| `id`     | INT           | Klucz główny       |
+| `name`   | VARCHAR(255)  | Nazwa statku       |
+| `status` | VARCHAR(50)   | Status statku      |
+
 ## Użytkowanie
 1. Zaloguj się na instniejące konto np. login: `test`, hasło: `test` lub zarejestruj nowe konto. Zostaniesz przeniesiony na stronę główną gdzie znajdziesz listę zleceń.
 2. Przejdź do zakładki `Dodaj Zlecenie`

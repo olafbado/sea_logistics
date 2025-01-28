@@ -1,11 +1,10 @@
 <?php
-session_start();
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ../login.php');
-    exit;
-}
-
 require '../includes/db.php';
+require '../includes/functions.php';
+
+session_start();
+
+redirectIfNotLoggedIn();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['title'];
@@ -20,11 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (!empty($fileContent)) {
-        // Save content from textarea to a new file
         $filePath = $uploadDir . uniqid() . '.txt';
         file_put_contents($filePath, $fileContent);
     } elseif (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
-        // Save uploaded file
         $filePath = $uploadDir . basename($_FILES['file']['name']);
         move_uploaded_file($_FILES['file']['tmp_name'], $filePath);
     }
@@ -35,8 +32,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// Fetch the list of ships
-$ships = $db->query("SELECT id, name FROM ships")->fetchAll(PDO::FETCH_ASSOC);
+
+$ships =getShips($db);
+
 ?>
 <!DOCTYPE html>
 <html lang="pl">

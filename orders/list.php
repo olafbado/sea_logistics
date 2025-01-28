@@ -1,5 +1,8 @@
 <?php
+require 'includes/functions.php';
 require 'includes/db.php';
+
+redirectIfNotLoggedIn();
 
 $search = $_GET['search'] ?? '';
 

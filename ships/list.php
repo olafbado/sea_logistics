@@ -1,9 +1,11 @@
 <?php
+require 'includes/functions.php';
 require 'includes/db.php';
+
+redirectIfNotLoggedIn();
 
 $search = $_GET['search'] ?? '';
 
-// Pobieranie danych z bazy z uwzględnieniem wyszukiwania
 $stmt = $db->prepare("SELECT * FROM ships WHERE name LIKE ?");
 $stmt->execute(['%' . $search . '%']);
 
