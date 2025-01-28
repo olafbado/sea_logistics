@@ -9,79 +9,51 @@ require '../includes/db.php';
 
 $id = $_GET['id'] ?? null;
 if (!$id) {
-    header('Location: ../index.php?page=orders');
+    header('Location: ../index.php?page=ships');
     exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $title = $_POST['title'];
-    $description = $_POST['description'];
-    $ship_id = $_POST['ship_id'];
-    $fileContent = $_POST['file_content'];
+    $name = $_POST['name'];
+    $status = $_POST['status'];
 
-    $uploadDir = '../uploads/orders/' . $id . '/';
-    if (!is_dir($uploadDir)) {
-        mkdir($uploadDir, 0777, true);
-    }
-    $filePath = $uploadDir . 'order.txt';
-    file_put_contents($filePath, $fileContent);
-
-    $stmt = $db->prepare("UPDATE orders SET title = ?, description = ?, file_path = ?, ship_id = ? WHERE id = ?");
-    $stmt->execute([$title, $description, $filePath, $ship_id, $id]);
-    header('Location: ../index.php?page=orders');
+    $stmt = $db->prepare("UPDATE ships SET name = ?, status = ? WHERE id = ?");
+    $stmt->execute([$name, $status, $id]);
+    header('Location: ../index.php?page=ships');
     exit;
 }
 
-$stmt = $db->prepare("SELECT * FROM orders WHERE id = ?");
+$stmt = $db->prepare("SELECT * FROM ships WHERE id = ?");
 $stmt->execute([$id]);
-$order = $stmt->fetch(PDO::FETCH_ASSOC);
+$ship = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$order) {
-    header('Location: ../index.php?page=orders');
+if (!$ship) {
+    header('Location: ../index.php?page=ships');
     exit;
 }
-
-$fileContent = '';
-if (!empty($order['file_path']) && file_exists($order['file_path'])) {
-    $fileContent = file_get_contents($order['file_path']);
-}
-
-// Fetch the list of ships
-$ships = $db->query("SELECT id, name FROM ships")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edytuj zlecenie</title>
+    <title>Edytuj statek</title>
     <link rel="stylesheet" href="../assets/styles.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>
     <main>
-        <h1>Edytuj zlecenie</h1>
+        <h1>Edytuj statek</h1>
         <form method="POST" class="ship-form">
-            <label for="title">Tytuł:</label>
-            <input type="text" name="title" value="<?= htmlspecialchars($order['title']) ?>" required>
+            <label for="name">Nazwa:</label>
+            <input type="text" name="name" value="<?= htmlspecialchars($ship['name']) ?>" required>
             <br>
-            <label for="description">Opis:</label>
-            <textarea name="description" required><?= htmlspecialchars($order['description']) ?></textarea>
-            <br>
-            <label for="ship_id">Statek:</label>
-            <select name="ship_id" required>
-                <option value="">Wybierz statek</option>
-                <?php foreach ($ships as $ship): ?>
-                    <option value="<?= $ship['id'] ?>" <?= $ship['id'] == $order['ship_id'] ? 'selected' : '' ?>><?= htmlspecialchars($ship['name']) ?></option>
-                <?php endforeach; ?>
-            </select>
-            <br>
-            <label for="file_content">Zawartość pliku:</label>
-            <textarea name="file_content" rows="10" cols="50"><?= htmlspecialchars($fileContent) ?></textarea>
+            <label for="status">Status:</label>
+            <input type="text" name="status" value="<?= htmlspecialchars($ship['status']) ?>" required>
             <br>
             <button type="submit">Zapisz zmiany</button>
         </form>
-        <a href="../index.php?page=orders">Powrót</a>
+        <a href="../index.php?page=ships">Powrót</a>
     </main>
 </body>
 </html>
